@@ -5,6 +5,7 @@
       ref="form"
       v-model="valid"
       :lazy-validation="lazy"
+      class="mx-16"
     >
       <v-text-field
         v-model="foodItem.itemName"
@@ -35,6 +36,7 @@
         required
       ></v-select>
 
+
       <v-btn
         color="success"
         class="mr-4"
@@ -57,7 +59,9 @@
 
 <script>
 import DataService from '../services/DataService'
+
 export default {
+
     data() {
     return{
       foodItem: {
@@ -67,11 +71,13 @@ export default {
           price: null,
           type: null,
       },
+
       items: [
         {text: 'Food Item'},
         {text: 'Beverage'}
       ]
     };
+
   },
   methods: {
         saveItem() {
@@ -82,6 +88,7 @@ export default {
              type: this.foodItem.type
             // image = this.item.image
            };
+
            DataService.create(data)
            .then(response => {
            this.foodItem.id = response.data.id;
@@ -91,10 +98,13 @@ export default {
            .catch(e => {
            console.log(e);
            });
+
         },
+
         reset () {
         this.$refs.form.reset()
         },
+        
        }
     
 };

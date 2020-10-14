@@ -1,5 +1,6 @@
 
 <template>
+<div>
   <v-row align="center" class="list px-3 mx-auto">
     <v-col cols="12" sm="12">
       <v-card class="mx-auto" flat tile>
@@ -35,11 +36,7 @@
              hide-details
           ></v-text-field>
           </v-col>
-          <v-col cols="12" md="4">
-           <v-btn small @click="searchTitle">
-            Search
-           </v-btn>
-          </v-col>
+          
           <v-spacer></v-spacer>
       <v-dialog
             v-model="dialog"
@@ -139,14 +136,14 @@
                   text
                   @click="close"
                 >
-                  Cancel
+                  Cancel Changes
                 </v-btn>
                 <v-btn
                   color="blue darken-1"
                   text
                   @click="updateCashier"
                 >
-                  Save
+                  Save Changes
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -192,6 +189,7 @@
       </v-card>
     </v-col>
   </v-row>
+</div>
 </template>
 
 <script>
@@ -247,6 +245,7 @@ export default {
   },
 
   methods: {
+
     retrieveCashiers() {
       DataService.getAllCashiers()
         .then((response) => {

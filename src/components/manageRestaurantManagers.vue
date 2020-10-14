@@ -34,11 +34,6 @@
              hide-details
           ></v-text-field>
           </v-col>
-          <v-col cols="12" md="4">
-           <v-btn small @click="searchTitle">
-            Search
-           </v-btn>
-          </v-col>
           <v-spacer></v-spacer>
       <v-dialog
             v-model="dialog"
@@ -138,14 +133,14 @@
                   text
                   @click="close"
                 >
-                  Cancel
+                  Cancel Changes
                 </v-btn>
                 <v-btn
                   color="blue darken-1"
                   text
                   @click="updateRestaurantManager"
                 >
-                  Save
+                  Update Changes
                 </v-btn>
               </v-card-actions>
             </v-card>

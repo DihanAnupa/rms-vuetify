@@ -13,6 +13,7 @@
         <v-data-table
           :headers="headers"
           :items="Chefs"
+          :search = "search"
           disable-pagination
           :hide-default-footer="true"
         >
@@ -27,19 +28,16 @@
             vertical
           ></v-divider>
           <v-col cols="8" md="4">
-          <v-text-field
-             v-model="search"
-             append-icon="mdi-magnify"
-             label="Search"
-             single-line
-             hide-details
-          ></v-text-field>
+           <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details>
+           </v-text-field>
+
           </v-col>
-          <v-col cols="12" md="4">
-           <v-btn small @click="searchTitle">
-            Search
-           </v-btn>
-          </v-col>
+        
           <v-spacer></v-spacer>
       <v-dialog
             v-model="dialog"
@@ -139,14 +137,14 @@
                   text
                   @click="close"
                 >
-                  Cancel
+                  Cancel Changes
                 </v-btn>
                 <v-btn
                   color="blue darken-1"
                   text
                   @click="updateChef"
                 >
-                  Save
+                  Update Changes
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -201,6 +199,7 @@ export default {
   name: "chefs-list",
   data() {
     return {
+      search:'',
       dialog: false,
       dialogDelete: false,
       dialogDeleteAll: false,

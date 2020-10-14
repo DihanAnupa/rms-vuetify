@@ -1,188 +1,387 @@
+
 <template>
-<div>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    sort-by="calories"
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Orders </v-toolbar-title>
+
+  <v-row align="center" class="list px-3 mx-auto">
+    <v-col cols="12" sm="12">
+      <v-card class="mx-auto" flat tile>
+        <v-card-title>Manage Orders</v-card-title>
         <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
 
-        <v-text-field
-           flat
-           solo-inverted
-           hide-details
-           prepend-inner-icon="mdi-magnify"
-           label="Search"
-           class="hidden-sm-and-down"
-        ></v-text-field>
+        <v-data-table
+          :headers="headers"
+          :items="orders"
+          :search = "search"
+          disable-pagination
+          :hide-default-footer="true"
+        >
+        <template v-slot:top>
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>All Orders</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
+          <v-col cols="8" md="4">
+           <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details>
+           </v-text-field>
 
+          </v-col>
+         
+          <v-spacer></v-spacer>
+      <v-dialog
+            v-model="dialog"
+            max-width="500px"
+          >
+            <v-card>
+              <v-card-title>
+                <span class="headline">Edit Orders</span>
+              </v-card-title>
+  
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.pOrderID"
+                        label="Order ID"
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                    
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.orderitem1"
+                        label="Item 1"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.quantity1"
+                        label="Quantity 1"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.orderitem2"
+                        label="Item 2"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.quantity2"
+                        label="Quantity 2"
+                      ></v-text-field>
+                    </v-col>
 
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
+                     <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.orderitem3"
+                        label="Item 3"
+                      ></v-text-field>
+                    </v-col>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Employee ID"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.calories" label="Username"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.fat" label="First Name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.carbs" label="Last Name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.protein" label="Email"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.protein" label="Contact Number"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.protein" label="NIC"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.quantity3"
+                        label="Quantity 3"
+                      ></v-text-field>
+                    </v-col>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
-  </v-data-table>
-</div>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.status"
+                        label="Status"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="placeOrder.tPrice"
+                        label="Total Price"
+                      ></v-text-field>
+                    </v-col>
+
+                  </v-row>
+                </v-container>
+              </v-card-text>
+  
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="close"
+                >
+                  Cancel Changes
+                </v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="updateOrder"
+                >
+                  Update Changes
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="headline">Delete Order?</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="deleteOrderbyID">OK</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDeleteAll" max-width="500px">
+            <v-card>
+              <v-card-title class="headline">Delete all Orders?</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDeleteAll">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="deleteAllOrders">OK</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+         </v-toolbar>
+      </template>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-icon small class="mr-2" @click="editOrder(item)">mdi-pencil</v-icon>
+            <v-icon small @click="deleteOrder(item)">mdi-delete</v-icon>
+          </template>
+        </v-data-table>
+
+        <v-card-actions>
+          <v-btn small color="error" class="mr-3" @click="dialogDeleteLauncher">
+            Remove All Orders
+          </v-btn>
+          <v-btn small color="primary" @click="refreshList">
+            Refresh
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
+
 <script>
-  export default {
-    data: () => ({
+//import VueHtml2pdf from 'vue-html2pdf'
+import DataService from '../services/DataService';
+export default {
+  name: "orders-list",
+  data() {
+    return {
+      search:'',
       dialog: false,
+      dialogDelete: false,
+      dialogDeleteAll: false,
+      orders: [],
+      title: "",
       headers: [
-        {
-          text: 'Order ID',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'Order Items', value: 'calories' },
-        { text: 'Quantity', value: 'fat' },
-        { text: 'Order Time', value: 'carbs' },
-        { text: 'Status', value: 'protein' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: "Order ID", value: "pOrderID" }, 
+                 {
+                    text: "Item 1",
+                    align: 'start',
+                    sortable: false,
+                    value: "orderitem1", 
+                 },
+                 { text: "Quantity 1", value: "quantity1" },
+                 { text: "Item 2", value: "orderitem2" },
+                 { text: "Quantity 2", value: "quantity2" },
+                 { text: "Item 3", value: "orderitem3" },
+                 { text: "Quantity 3", value: "quantity3" },
+                 { text: "Status", value: "status"},
+                 { text: "Total Price", value: "tPrice"},
+                 { text: "Actions", value: 'actions', sortable: false },
       ],
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
-      defaultItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
-    }),
+      placeOrder : {
+        pOrderID:'',
+        orderitem1: '',
+        quantity1:'',
+        orderitem2: '',
+        quantity2: '',
+        orderitem3: '',
+        quantity3:'',
+        status: '',
+        tPrice:'',
+      }
+    };
+  },
 
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
+  watch: {
+    dialog (val) {
+      val || this.close()
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
+    dialogDelete (val) {
+      val || this.closeDelete()
     },
 
-    created () {
-      this.initialize()
+    dialogDeleteAll (val) {
+      val || this.closeDeleteAll()
     },
+  },
 
-    methods: {
-      initialize () {
-        this.desserts = [
-          {
-            name: '',
-            calories: null,
-            fat: null,
-            carbs: null,
-            protein: null,
-          },
-          
-        ]
-      },
-
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this Order?') && this.desserts.splice(index, 1)
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
+  methods: {
+    retrieveOrders() {
+      DataService.getAllOrders()
+        .then((response) => {
+         this.orders = response.data.map(this.getDisplayOrders);
+          console.log(response.data);
         })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
+        .catch((e) => {
+          console.log(e);
+        });
     },
-  }
+
+    refreshList() {
+      this.retrieveOrders();
+    },
+
+editOrder (item) {
+    this.placeOrder = Object.assign({}, item)
+    this.dialog = true
+    },
+
+    deleteOrder (item) {
+    this.placeOrder = Object.assign({}, item)
+    this.dialogDelete = true
+    },
+
+    close() {
+      this.dialog = false
+    },
+ 
+    closeDelete() {
+      this.dialogDelete = false
+    },
+
+    closeDeleteAll() {
+      this.dialogDeleteAll = false
+    },
+
+    dialogDeleteLauncher() {
+      this.dialogDeleteAll = true
+    },
+
+    deleteAllOrders() {
+      DataService.deleteAllOrders()
+        .then((response) => {
+          console.log(response.data);
+          this.refreshList();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+        this.closeDeleteAll();
+    },
+
+    searchTitle() {
+      DataService.findByTitle(this.title)
+        .then((response) => {
+          this.orders = response.data.map(this.getDisplayOrders);
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+
+    updateOrder() {
+       DataService.updateOrderbyID(this.placeOrder.pOrderID, this.placeOrder)
+       .then((response) => {
+         console.log(response.data);
+         this.message = "Order Details were Updated successfully";
+         this.refreshList();
+       })
+       .catch((e) => {
+         console.log(e);
+       })
+       this.close()
+       
+    },
+
+    deleteOrderbyID() {
+      DataService.deleteOrderbyID(this.placeOrder.pOrderID)
+        .then(() => {
+          this.refreshList();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+        this.closeDelete();
+    },
+
+    getDisplayOrders(placeOrder) {
+      return {
+       pOrderID : placeOrder.pOrderID,
+       orderitem1: placeOrder.orderitem1,
+       quantity1: placeOrder.quantity1,
+       orderitem2: placeOrder.orderitem2,
+       quantity2: placeOrder.quantity2,
+       orderitem3: placeOrder.orderitem3,
+       quantity3: placeOrder.quantity3,
+       status : placeOrder.status,
+       tPrice : placeOrder.tPrice
+        
+      };
+    },
+  },
+
+  mounted() {
+    this.retrieveOrders();
+  },
+};
 </script>

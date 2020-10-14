@@ -1,5 +1,7 @@
 <template>
-  <v-row align="center">
+<div class="submit-form">
+    <v-row align="center">
+        <div v-if="!submitted">
     <v-form
       ref="form"
       v-model="valid"
@@ -68,20 +70,26 @@
       <v-btn color="success" class="mr-4" @click="addRestManager"> Add Restaurant Manager </v-btn>
       <v-btn color="success" class="mr-4" @click="addInvManager"> Add Inventory Manager </v-btn>
       </v-row>
- 
-      <v-row>
-      <v-btn
-        color="error"
-        @click="reset"
-        center
-        block
-      >
-        Reset Form
-      </v-btn>
+
+   <v-row>
+     
+      <v-btn color="error" class="mr-4" @click="reset">Reset Form </v-btn>
+      <v-btn color="primary" class="mr-4" @click="demo">Demo </v-btn>
       </v-row>
 
     </v-form>
+        </div>
+
+        <div v-else>
+            <v-alert type="success">
+              Employee added Successfully!
+              <v-col class="shrink">
+               <v-btn @click="newEmployee">Add another Employee</v-btn>
+              </v-col>
+            </v-alert>
+        </div>
   </v-row>
+</div>
 </template>
 
 <script>
@@ -103,6 +111,8 @@ import DataService from '../services/DataService'
         passWord: '',
         nic: '',
       },
+
+      submitted : false,
       name: '',
       nameRules: [
         v => !!v || 'Username is required',
@@ -142,7 +152,26 @@ import DataService from '../services/DataService'
     };
   
     },
+    //add new employee dialog 
     methods: {
+      //demo button data
+      demo() {
+                this.employee = {
+                     userName: 'Dihan33',
+                     firstName: 'Dihan',
+                      lastName: 'Perera',
+                     phoneNo: '0767287650',
+                      email: 'dihananupa99@gmail.com',
+                      passWord: '123456789',
+                      nic: '990880690V',
+                };
+            },
+
+      newEmployee() {
+              this.submitted = false;
+              this.employee = {};
+            },
+
       addChef() {
         var data = {
              userName: this.employee.userName,

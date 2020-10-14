@@ -117,6 +117,50 @@ deleteEmployeeInventoryManagerbyID(id){
 deleteAllInventoryManagers(){
   return http.delete(`deleteAllInventoryManagers`);
 }
+
+
+////////////////////////////////////// Orders CRUD  ///////////////////////////////////////////////////////////////////////////////
+//Add order
+addOrder(data){
+  return http.post(`/addpOrder`, data);
+}
+//Retrieve All Orders
+getAllOrders(){
+  return http.get(`/retrieveOrders`);
+}
+
+//Update Order by ID
+updateOrderbyID(id, data){
+  return http.put(`/updatePlaceOrder/${id}`, data);
+
+}
+
+//Delete Order by ID
+deleteOrderbyID(id){
+  return http.delete(`/deletePlaceOrder/${id}`);
+}
+
+//Delete all Orders
+deleteAllOrders(){
+  return http.delete(`/deleteAllOrders`);
+}
+
+////////////////////////////////////// Food Items //////////////////////////////////////////////////////////////////////////
+getAllFoodItems() {
+  return http.get("/retrieveItems");
+}
+
+updateFoodItemByID(id, data) {
+  return http.put(`/updateFoodItem/${id}`, data);
+}
+
+deleteFoodItemByID(id) {
+  return http.delete(`/deleteFoodItem/${id}`);
+}
+
+deleteAllFoodItems() {
+  return http.delete(`/deleteAllFoodItems`);
+}
 }
 
 export default new DataService();
