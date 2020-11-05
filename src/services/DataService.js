@@ -118,12 +118,37 @@ deleteAllInventoryManagers(){
   return http.delete(`deleteAllInventoryManagers`);
 }
 
+//Search function for chef
+getChefbyUserName(userName){
+  return http.get(`/retrieveChefByUserName/${userName}`);
+}
+
+//Search function for Cashier
+getCashierbyUserName(userName){
+  return http.get(`/retrieveCashierByUserName/${userName}`);
+}
+
+//Search function for Restaurant Manager
+getRestaurantManagerbyUserName(userName){
+  return http.get(`/retrieveRestaurantManagerByUserName/${userName}`);
+}
+
+//Search function for Inventory Manager
+getInventoryManagerbyUserName(userName){
+  return http.get(`/retrieveInventoryManagerByUserName/${userName}`);
+}
 
 ////////////////////////////////////// Orders CRUD  ///////////////////////////////////////////////////////////////////////////////
 //Add order
 addOrder(data){
   return http.post(`/addpOrder`, data);
 }
+
+//Search order by ID
+getOrderByOrderID(orderID){
+  return http.get(`/retrieveOrderByOrderID/${orderID}`);
+}
+
 //Retrieve All Orders
 getAllOrders(){
   return http.get(`/retrieveOrders`);

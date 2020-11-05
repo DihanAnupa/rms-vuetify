@@ -11,6 +11,8 @@
             vertical
           ></v-divider>
 
+          <div id= 'orderReport'>
+
         <v-data-table
           :headers="headers"
           :items="orders"
@@ -28,9 +30,11 @@
             inset
             vertical
           ></v-divider>
+
           <v-col cols="8" md="4">
            <v-text-field
           v-model="search"
+          this.searchName
           append-icon="mdi-magnify"
           label="Search"
           single-line
@@ -201,13 +205,17 @@
             <v-icon small @click="deleteOrder(item)">mdi-delete</v-icon>
           </template>
         </v-data-table>
+          </div>
 
         <v-card-actions>
           <v-btn small color="error" class="mr-3" @click="dialogDeleteLauncher">
             Remove All Orders
           </v-btn>
-          <v-btn small color="primary" @click="refreshList">
+          <v-btn small color="primary"  class="mr-3" @click="refreshList">
             Refresh
+          </v-btn>
+          <v-btn small color="primary" class="mr-3" @click="generateReport">
+            Generate Order Report
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -218,12 +226,15 @@
 
 <script>
 //import VueHtml2pdf from 'vue-html2pdf'
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import DataService from '../services/DataService';
 export default {
   name: "orders-list",
   data() {
     return {
       search:'',
+      heading : 'orderReport',
       dialog: false,
       dialogDelete: false,
       dialogDeleteAll: false,
@@ -275,6 +286,23 @@ export default {
   },
 
   methods: {
+    //Generate report for orders
+     generateReport() {
+      var element = document.getElementById("orderReport")
+      html2canvas(element).then((canvas) => {
+        console.log(canvas)
+
+        let pagewidth = 210
+
+        var imgData = canvas.toDataURL(`image/png`)
+        var imgHeight = (canvas.height * pagewidth / canvas.width)
+        var doc = new jsPDF()
+        doc.addImage(imgData, 0, 0, pagewidth, imgHeight)
+
+        doc.save(`${this.heading}.pdf`)
+      })
+    },
+
     retrieveOrders() {
       DataService.getAllOrders()
         .then((response) => {
@@ -328,10 +356,11 @@ editOrder (item) {
         this.closeDeleteAll();
     },
 
-    searchTitle() {
-      DataService.findByTitle(this.title)
+    //Search method - by OrderID
+    searchName() {
+      DataService.getOrderByOrderID(this.placeOrder.pOrderID)
         .then((response) => {
-          this.orders = response.data.map(this.getDisplayOrders);
+          this.orders = response.data.map(this.getAllOrders);
           console.log(response.data);
         })
         .catch((e) => {

@@ -27,9 +27,11 @@
             inset
             vertical
           ></v-divider>
+
           <v-col cols="8" md="4">
           <v-text-field
              v-model="search"
+             this.searchName
              append-icon="mdi-magnify"
              label="Search"
              single-line
@@ -100,6 +102,19 @@
                       <v-text-field
                         v-model="Cashier.email"
                         label="Email"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="Cashier.passWord"
+                        label="Password"
+                         :type="show1 ? 'text' : 'password'"
+                         readonly
                       ></v-text-field>
                     </v-col>
 
@@ -198,6 +213,8 @@ export default {
   name: "cashiers-list",
   data() {
     return {
+      search:'',
+      show1: false,
       dialog: false,
       dialogDelete: false,
       dialogDeleteAll: false,
@@ -224,6 +241,7 @@ export default {
         firstName:'',
         lastName:'',
         email:'',
+        passWord:'',
         phoneNo: '',
         nic:'',
       }
@@ -299,16 +317,18 @@ editCashier (item) {
         this.closeDeleteAll();
     },
 
-    searchTitle() {
-      DataService.findByTitle(this.title)
+    //Search method - by Cashier username
+    searchName() {
+      DataService.getCashierByUserName(this.Cashier.username)
         .then((response) => {
-          this.ingredients = response.data.map(this.getDisplayIngredient);
+          this.Cashiers = response.data.map(this.getAllCashiers);
           console.log(response.data);
         })
         .catch((e) => {
           console.log(e);
         });
     },
+
 
     updateCashier() {
        DataService.updateEmployeeCashier(this.Cashier.cashierID, this.Cashier)
@@ -342,6 +362,7 @@ editCashier (item) {
         firstName: Cashier.firstName,
         lastName: Cashier.lastName,
         email: Cashier.email,
+        passWord: Cashier.passWord,
         phoneNo: Cashier.phoneNo,
         nic: Cashier.nic
       };

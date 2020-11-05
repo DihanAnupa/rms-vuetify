@@ -25,11 +25,13 @@
             inset
             vertical
           ></v-divider>
+
           <v-col cols="8" md="4">
           <v-text-field
              v-model="search"
              append-icon="mdi-magnify"
              label="Search"
+             this.searchName
              single-line
              hide-details
           ></v-text-field>
@@ -97,6 +99,19 @@
                       <v-text-field
                         v-model="RestaurantManager.email"
                         label="Email"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="RestaurantManager.passWord"
+                        label="Password"
+                         :type="show1 ? 'text' : 'password'"
+                         readonly
                       ></v-text-field>
                     </v-col>
 
@@ -195,6 +210,8 @@ export default {
   name: "RestaurantManagers-list",
   data() {
     return {
+      search: '',
+      show1 : false,
       dialog: false,
       dialogDelete: false,
       dialogDeleteAll: false,
@@ -221,6 +238,7 @@ export default {
         firstName:'',
         lastName:'',
         email:'',
+        passWord: '',
         phoneNo:'',
         nic:'',
       }
@@ -294,10 +312,11 @@ editRestaurantManager (item) {
         this.closeDeleteAll();
     },
 
-    searchTitle() {
-      DataService.findByTitle(this.title)
+    //Search method - by RestaurantManager username
+    searchName() {
+      DataService.getRestaurantManagerByUserName(this.RestaurantManager.username)
         .then((response) => {
-          this.ingredients = response.data.map(this.getDisplayIngredient);
+          this.RestaurantManagers = response.data.map(this.getAllRestaurantManagers);
           console.log(response.data);
         })
         .catch((e) => {
@@ -338,6 +357,7 @@ editRestaurantManager (item) {
         firstName: RestaurantManager.firstName,
         lastName: RestaurantManager.lastName,
         email: RestaurantManager.email,
+        passWord: RestaurantManager.passWord,
         phoneNo: RestaurantManager.phoneNo,
         nic: RestaurantManager.nic
       };

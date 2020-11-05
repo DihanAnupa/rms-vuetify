@@ -27,11 +27,14 @@
             inset
             vertical
           ></v-divider>
+
           <v-col cols="8" md="4">
            <v-text-field
           v-model="search"
+          this.searchName
           append-icon="mdi-magnify"
           label="Search"
+
           single-line
           hide-details>
            </v-text-field>
@@ -103,6 +106,21 @@
                         label="Email"
                       ></v-text-field>
                     </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="Chef.passWord"
+                        label="Password"
+                         :type="show1 ? 'text' : 'password'"
+                         readonly
+                      ></v-text-field>
+                    </v-col>
+
+
 
                      <v-col
                       cols="12"
@@ -200,6 +218,7 @@ export default {
   data() {
     return {
       search:'',
+      show1: false,
       dialog: false,
       dialogDelete: false,
       dialogDeleteAll: false,
@@ -226,6 +245,7 @@ export default {
         firstName:'',
         lastName:'',
         email:'',
+        passWord:'',
         phoneNo:'',
         nic:'',
       }
@@ -300,10 +320,11 @@ editChef (item) {
         this.closeDeleteAll();
     },
 
-    searchTitle() {
-      DataService.findByTitle(this.title)
+    //Search method - by Chef username
+    searchName() {
+      DataService.getChefByUserName(this.Chef.username)
         .then((response) => {
-          this.ingredients = response.data.map(this.getDisplayIngredient);
+          this.Chefs = response.data.map(this.getDisplayChefs);
           console.log(response.data);
         })
         .catch((e) => {
@@ -343,6 +364,7 @@ editChef (item) {
         firstName: Chef.firstName,
         lastName: Chef.lastName,
         email: Chef.email,
+        passWord: Chef.passWord,
         phoneNo: Chef.phoneNo,
         nic: Chef.nic
       };

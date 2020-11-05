@@ -34,6 +34,7 @@
             vertical
           ></v-divider>
           <v-col cols="8" md="4">
+            
           <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -208,12 +209,13 @@ import DataService from '../services/DataService'
 
       demo(){
         this.placeOrder = {
-          orderitem1: 'Pepperoni Pizza',
+          orderitem1: 'Pizza',
           quantity1:'1',
-          orderitem2: 'Club Sandwiches',
+          orderitem2: 'Soup',
           quantity2:'2',
           orderitem3: 'Coca-Cola',
           quantity3:'3',
+          status:'Pending'
 
         };
       },

@@ -30,6 +30,7 @@
              v-model="search"
              append-icon="mdi-magnify"
              label="Search"
+             this.searchName
              single-line
              hide-details
           ></v-text-field>
@@ -98,6 +99,19 @@
                       <v-text-field
                         v-model="InventoryManager.email"
                         label="Email"
+                      ></v-text-field>
+                    </v-col>
+
+                     <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="InventoryManager.passWord"
+                        label="Password"
+                         :type="show1 ? 'text' : 'password'"
+                         readonly
                       ></v-text-field>
                     </v-col>
 
@@ -196,6 +210,8 @@ export default {
   name: "InventoryManagers-list",
   data() {
     return {
+      search:'',
+      show1: false,
       dialog: false,
       dialogDelete: false,
       dialogDeleteAll: false,
@@ -222,6 +238,7 @@ export default {
         firstName:'',
         lastName:'',
         email:'',
+        passWord:'',
         phoneNo:'',
         nic:'',
       }
@@ -296,10 +313,11 @@ export default {
         this.closeDeleteAll();
     },
 
-    searchTitle() {
-      DataService.findByTitle(this.title)
+     //Search method - by InvenotoryManager username
+    searchName() {
+      DataService.getInventoryManagerByUserName(this.InventoryManager.username)
         .then((response) => {
-          this.ingredients = response.data.map(this.getDisplayIngredient);
+          this.InventoryManagers = response.data.map(this.getAllInventoryManagers);
           console.log(response.data);
         })
         .catch((e) => {
@@ -340,6 +358,7 @@ export default {
         firstName: InventoryManager.firstName,
         lastName: InventoryManager.lastName,
         email: InventoryManager.email,
+        passWord: InventoryManager.passWord,
         phoneNo: InventoryManager.phoneNo,
         nic: InventoryManager.nic
       };
